@@ -4,4 +4,4 @@ Familiarizing myself with React Native
 
 Recreated the following I made with ReactJS with React Native
 
-https://tommytran8.github.io/shopping-counter-app/
+https://github.com/tommytran8/shopping-counter-app
