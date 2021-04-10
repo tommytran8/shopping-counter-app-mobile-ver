@@ -1,6 +1,6 @@
 # shopping-counter-app-mobile-ver
 
-Familiarizing myself with React Native
+Learning React Native
 
 Recreated the following I made with ReactJS with React Native
 
