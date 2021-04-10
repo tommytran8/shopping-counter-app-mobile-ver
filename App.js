@@ -5,24 +5,24 @@ import {
   TouchableOpacity,
   Text,
   View,
-  Image,
-  SectionList
+  Image
 } from 'react-native'
 
 const Button = (props) => {
-  const add = "+"
-  const sub = "-"
-  const trash = "trash"
   return (
     <View style={styles.buttons}>
-      <TouchableOpacity style={styles.container} onPress={props.onClickAdd}>
-        <Text style={styles.itembutton}>{add}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.container} onPress={props.onClickSub}>
-        <Text style={styles.itembutton}>{sub}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.container} onPress={props.onClickTrash}>
-        <Text style={styles.itembutton}>{trash}</Text>
+        <View style={styles.buttoncontainer}>
+          <TouchableOpacity onPress={props.onClickAdd}>
+            <Text style={styles.addsub}>{"+"}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <TouchableOpacity onPress={props.onClickSub}>
+            <Text style={styles.addsub}>{"-"}</Text>
+          </TouchableOpacity>
+        </View>
+      <TouchableOpacity style={styles.trashcontainer} onPress={props.onClickTrash}>
+        <Image style={styles.trash} source={require('./assets/trash.png')}/>
       </TouchableOpacity>
     </View>
   );
@@ -94,8 +94,8 @@ class Site extends Component {
             <View style={styles.container}>
               <Text style={styles.itemname}>{key}{": "}</Text>
             </View>
-            <View style={styles.container}>
-              <Text style={styles.itemquantity}>{value}</Text>
+            <View style={styles.numcontainer}>
+              <Text style={styles.itemname}>{value}</Text>
             </View>
             
             <Button 
@@ -120,27 +120,29 @@ class Site extends Component {
     });
     return (
     <View style={styles.site}>
-      <View style={styles.nav}>
-        <Image style={styles.cart} source={require('./assets/cart.png')}/>
-        <View style={styles.numofItemsContainer}>
-          <Text style={styles.numofItems}>{numofItems}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{'Shopping Cart'}</Text>
+        <View style={styles.nav}>
+          <Image style={styles.cart} source={require('./assets/cart.png')}/>
+          <View style={styles.numofItemsContainer}>
+            <Text style={styles.numofItems}>{numofItems}</Text>
+          </View>
+          <Text style={styles.navText}>Items</Text>
+          
+          <TouchableOpacity onPress={() => {this.handleRefresh()}}>
+            <Image style={styles.refresh} source={require('./assets/refresh.png')}/> 
+          </TouchableOpacity>
         </View>
-        <Text style={styles.navText}>Items</Text>
-        
-        <TouchableOpacity onPress={() => {this.handleRefresh()}}>
-          <Image style={styles.refresh} source={require('./assets/refresh.png')}/> 
-        </TouchableOpacity>
-
       </View>
       <View style={styles.body}>
         {output}
         <View style={styles.dropDown}> 
-          <Text style={styles.currentItem}>{this.state.currentItem}</Text>
+          <Text style={styles.currentItem}>{"Choose an item: "}{this.state.currentItem}</Text>
           <DropdownList
             onSelect={(item)=>{this.setState({currentItem: item})}}
           />
-          <TouchableOpacity onPress={() => {this.handleSubmit()}}>
-              <Text style={styles.addCart} >{"Add to Cart"}</Text>
+          <TouchableOpacity style={styles.addCart} onPress={() => {this.handleSubmit()}}>
+              <Text >{"Add to Cart"}</Text>
           </TouchableOpacity>
         </View>
         
@@ -155,87 +157,142 @@ class Site extends Component {
 
 const styles = StyleSheet.create({
   site: {
-    // backgroundColor: 'antiquewhite',
+
+  },
+  header: {
     width: '100%',
-    height: '100%'
+    backgroundColor: 'antiquewhite',
+    paddingTop: 30,
+    paddingBottom: 10,
+  },
+  title: {
+    fontSize: 30,
+    alignSelf: 'center',
+    
   },
   nav: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: 70,
-    backgroundColor: 'antiquewhite',
-    position: "absolute"
+    alignSelf: 'center',
+    paddingTop: 20,
   },
   numofItems: {
     color: "aliceblue",
     fontSize: 17,
     fontWeight: "bold",
-    alignItems: "center",
+    alignSelf: "center",
   },
   numofItemsContainer: {
     borderRadius: 25,
     borderColor: "rgb(78, 216, 170)",
     backgroundColor: "rgb(78, 216, 170)",
     borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
     width: 55,
     height: 25
   },
   navText: {
     fontSize: 17,
     fontWeight: "bold",
-    marginLeft: 20
+    marginLeft: 10,
+    alignSelf: "center",
   },
   body: {
-    // flex: 1,
-    // flexDirection: 'row',
-    // justifyContent: 'flex-start',
-    alignItems: "center",
-    marginTop: 70
+    //display: none
   },
   refresh: {
-    alignItems: 'center',
     width: 40,
     height:  40,
-    // resizeMode: 'stretch',
     marginLeft: 20
   },
   cart: {
-    alignItems: 'center',
     width:  40,
     height:  40,
-    // resizeMode: 'stretch',
     marginRight: 20
   },
   itemcontainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+    
   },
   buttons: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
   },
   itemname: {
-    
+    alignSelf: 'center',
+    fontWeight: "bold",
+  },
+  addsub: {
+    alignSelf: 'center',
+    color: "white",
+    fontSize: 20
+  },
+  trash: {
+    width: 25,
+    height:  25,
+    alignSelf: 'center',
+  },
+  trashcontainer: {
+    backgroundColor: "red",
+    margin : 5,
+    width: 40,
+    height:  40,
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  buttoncontainer: {
+    backgroundColor: "black",
+    margin : 5,
+    width: 40,
+    height:  40,
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+
+  numcontainer: {
+    backgroundColor: "rgb(255, 217, 0)",
+    margin : 5,
+    width: 50,
+    height:  40,
+    justifyContent: "center",
+    borderRadius:5
   },
 
   container: {
-    backgroundColor: "rgb(255, 217, 0)",
-    width: 100,
-    height: 40,
-    flex: 1,
-    alignItems: "center",
+    margin : 5,
+    width: 80,
+    height:  40,
     justifyContent: "center",
+  },
+  dropDown: {
+    alignSelf: "center",
+    marginTop: 15,
+  },
+  dropDownList: {
+    // display: "none",
+    marginTop: 8,
+    marginBottom: 8,
+    alignSelf: "center"
+  },
+
+  currentItem: {
+    
+  },
+
+  list: {
+    borderRadius: 5,
+    padding: 2,
+    borderWidth: 1,
+  },
+
+  addCart: {
+    backgroundColor: "#d2e2fc",
+    alignSelf: "center",
+    borderRadius: 5,
+    padding: 3,
+    borderWidth: 1,
   },
 })
 
 export default Site;
-
 
 
